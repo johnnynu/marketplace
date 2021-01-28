@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,13 +10,16 @@ import {
 	Button,
 	Carousel,
 	CarouselItem,
+	Form,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
+	const [quantity, setQuantity] = useState(1);
+
 	const dispatch = useDispatch();
 
 	const productDetails = useSelector((state) => state.productDetails);
@@ -25,6 +28,10 @@ const ProductScreen = ({ match }) => {
 	useEffect(() => {
 		dispatch(listProductDetails(match.params.id));
 	}, [dispatch, match]);
+
+	const addToCartHandler = () => {
+		history.push(`/cart/${match.params.id}?quantity${quantity}`);
+	};
 
 	return (
 		<>
@@ -68,23 +75,48 @@ const ProductScreen = ({ match }) => {
 										</Col>
 									</Row>
 								</ListGroup.Item>
+
+								{product.stockCount > 0 && (
+									<ListGroup.Item>
+										<Row>
+											<Col>Quantity</Col>
+											<Col>
+												<Form.Control
+													as="select"
+													value={quantity}
+													onChange={(e) => setQuantity(e.target.value)}
+												>
+													{[...Array(product.stockCount).keys()].map((x) => (
+														<option key={x + 1} value={x + 1}>
+															{x + 1}
+														</option>
+													))}
+												</Form.Control>
+											</Col>
+										</Row>
+									</ListGroup.Item>
+								)}
+
 								<ListGroup.Item>
-									<Row>
-										<Col>Status:</Col>
-										<Col>
-											{product.stockCount > 0 ? "In Stock" : "Out of Stock"}
-										</Col>
-									</Row>
-								</ListGroup.Item>
-								<ListGroup.Item>
-									<Button
-										variant={product.stockCount === 0 ? "danger" : "success"}
-										className="btn-block"
-										type="button"
-										disabled={product.stockCount === 0}
-									>
-										Add to Cart
-									</Button>
+									{product.stockCount === 0 ? (
+										<Button
+											variant="danger"
+											className="btn-block"
+											type="button"
+											disabled
+										>
+											Out of Stock
+										</Button>
+									) : (
+										<Button
+											onClick={addToCartHandler}
+											variant="success"
+											className="btn-block"
+											type="button"
+										>
+											Add to Cart
+										</Button>
+									)}
 								</ListGroup.Item>
 							</ListGroup>
 						</Card>
