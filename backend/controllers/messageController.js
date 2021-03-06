@@ -8,7 +8,6 @@ import Message from "../models/MessageModel.js";
 
 const newMessage = asyncHandler(async (req, res) => {
 	const { fromUser, toUser, messageContent } = req.body;
-	console.log(req.body);
 
 	const message = new Message({
 		fromUser,
@@ -29,7 +28,6 @@ const getMessagesById = asyncHandler(async (req, res) => {
 	const { toUser, messageContent } = req.body;
 
 	const receivingUser = await Messages.findById(toUser);
-	console.log(messageContent);
 	if (receivingUser) {
 		res.status(201).json({
 			messageContent,
