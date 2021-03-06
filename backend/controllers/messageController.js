@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import Messages from "../models/MessageModel.js";
 import Message from "../models/MessageModel.js";
 
 // @desc    Create new message
@@ -20,4 +21,20 @@ const newMessage = asyncHandler(async (req, res) => {
 	res.status(201).json(newMessage);
 });
 
-export { newMessage };
+// @desc    Get messages by other user's ID
+// @route   GET /api/messages/:id
+//@access   Private
+
+const getMessagesById = asyncHandler(async (req, res) => {
+	const { toUser, messageContent } = req.body;
+
+	const receivingUser = await Messages.findById(toUser);
+	console.log(messageContent);
+	if (receivingUser) {
+		res.status(201).json({
+			messageContent,
+		});
+	}
+});
+
+export { newMessage, getMessagesById };
