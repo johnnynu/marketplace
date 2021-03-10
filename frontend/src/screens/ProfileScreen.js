@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, footer, Table } from "react-bootstrap";
+import {
+	FormControl,
+	FormLabel,
+	FormErrorMessage,
+	FormHelperText,
+	Input,
+	Heading,
+	Button as ChakraButton,
+	Table as ChakraTable,
+	Thead,
+	Tbody,
+	Tr,
+	Td,
+	Th,
+} from "@chakra-ui/react";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -54,107 +69,111 @@ const ProfileScreen = ({ location, history }) => {
 	};
 
 	return (
-		<Row>
-			<Col md={3}>
+		<Row className="justify-content-md-left">
+			<Col>
 				{loading && <Loader />}
-				<h2>Profile Settings</h2>
 				{message && <Message variant="danger">{message}</Message>}
 				{error && <Message variant="danger">{error}</Message>}
 				{success && <Message variant="success">Changes Saved</Message>}
+				<Heading as="h2">Profile Settings</Heading>
 				<Form onSubmit={submitHandler}>
-					<Form.Group controlId="name">
-						<Form.Label>Name</Form.Label>
-						<Form.Control
+					<FormControl id="name" mt={1}>
+						<FormLabel>Name</FormLabel>
+						<Input
 							type="name"
 							placeholder="Enter name"
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-						></Form.Control>
-					</Form.Group>
-					<Form.Group controlId="email">
-						<Form.Label>Email Address</Form.Label>
-						<Form.Control
+						></Input>
+					</FormControl>
+					<FormControl id="email" mt={1}>
+						<FormLabel>Email Address</FormLabel>
+						<Input
 							type="email"
 							placeholder="Enter email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-						></Form.Control>
-					</Form.Group>
-				</Form>
-				<Form onSubmit={submitHandler}>
-					<Form.Group controlId="password">
-						<Form.Label>Password</Form.Label>
-						<Form.Control
+						></Input>
+					</FormControl>
+					<FormControl id="password" mt={1}>
+						<FormLabel>Password</FormLabel>
+						<Input
 							type="password"
 							placeholder="Enter password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-						></Form.Control>
-					</Form.Group>
-					<Form.Group controlId="confirmPassword">
-						<Form.Label>Confirm Password</Form.Label>
-						<Form.Control
+						></Input>
+					</FormControl>
+					<FormControl id="confirmPassword" mt={1}>
+						<FormLabel>Confirm Password</FormLabel>
+						<Input
 							type="password"
 							placeholder="Confirm password"
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
-						></Form.Control>
-					</Form.Group>
-					<Row className="py-1"></Row>
-					<Button type="submit" variant="success" size="lg" block>
+						></Input>
+					</FormControl>
+					<Row className="py-2"></Row>
+					<Button
+						type="submit"
+						variant="success"
+						size="lg"
+						block
+						className="mx-auto"
+					>
 						Update
 					</Button>
 				</Form>
 			</Col>
-			<Col md={9}>
-				<h2>My Orders</h2>
+			<Col md={10}>
+				<Heading as="h2">My Orders</Heading>
 				{loadingOrders ? (
 					<Loader />
 				) : errorOrders ? (
 					<Message variant="danger">{errorOrders}</Message>
 				) : (
-					<Table striped bordered hover responsive className="table-sm">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Date</th>
-								<th>Total</th>
-								<th>Paid</th>
-								<th>Delivered</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
+					<ChakraTable variant="striped" colorScheme="blackAlpha" size="md">
+						<Thead>
+							<Tr>
+								<Th>ID</Th>
+								<Th>Date</Th>
+								<Th>Total</Th>
+								<Th>Paid</Th>
+								<Th>Delivered</Th>
+								<Th></Th>
+							</Tr>
+						</Thead>
+						<Tbody>
 							{orders.map((order) => (
-								<tr key={order._id}>
-									<td>{order._id}</td>
-									<td>{order.createdAt.substring(0, 10)}</td>
-									<td>{order.totalPrice}</td>
-									<td>
+								<Tr key={order._id}>
+									<Td>{order._id}</Td>
+									<Td>{order.createdAt.substring(0, 10)}</Td>
+									<Td>{order.totalPrice}</Td>
+									<Td>
 										{order.isPaid ? (
 											order.paidAt.substring(0, 10)
 										) : (
 											<i className="fas fa-times" style={{ color: "red" }}></i>
 										)}
-									</td>
-									<td>
+									</Td>
+									<Td>
 										{order.isDelivered ? (
 											order.deliveredAt.substring(0, 10)
 										) : (
 											<i className="fas fa-times" style={{ color: "red" }}></i>
 										)}
-									</td>
-									<td>
+									</Td>
+									<Td>
 										<LinkContainer to={`/order/${order._id}`}>
 											<Button className="btn-sm" variant="success">
 												Details
 											</Button>
 										</LinkContainer>
-									</td>
-								</tr>
+									</Td>
+								</Tr>
 							))}
-						</tbody>
-					</Table>
+						</Tbody>
+					</ChakraTable>
 				)}
 			</Col>
 		</Row>

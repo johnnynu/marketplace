@@ -5,6 +5,20 @@ import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProducts } from "../actions/productActions";
+import Rating from "../components/Rating";
+import { Link } from "react-router-dom";
+import {
+	Box,
+	Grid,
+	Image,
+	Badge,
+	LinkBox,
+	LinkOverlay,
+	Skeleton,
+	Alert,
+	AlertIcon,
+	Heading,
+} from "@chakra-ui/react";
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -18,19 +32,22 @@ const HomeScreen = () => {
 
 	return (
 		<>
-			<h1>Trending</h1>
-			{loading ? (
-				<Loader />
-			) : error ? (
-				<Message variant="danger">{error}</Message>
+			<Heading as="h3" size="lg">
+				Trending
+			</Heading>
+			{error ? (
+				<Alert status="error">
+					<AlertIcon />
+					{error}
+				</Alert>
 			) : (
-				<Row>
+				<Grid templateColumns="repeat(3, 1fr)" gap={6}>
 					{products.map((product) => (
-						<Col key={product._id} sm={12} md={6} lg={4} xlg={8}>
+						<Skeleton isLoaded={!loading}>
 							<Product product={product} />
-						</Col>
+						</Skeleton>
 					))}
-				</Row>
+				</Grid>
 			)}
 		</>
 	);

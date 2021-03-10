@@ -2,30 +2,63 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import Rating from "./Rating";
+import {
+	Box,
+	Grid,
+	Image,
+	Badge,
+	LinkBox,
+	LinkOverlay,
+} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Product = ({ product }) => {
+	const userDetails = useSelector((state) => state.userDetails);
+	const { user } = userDetails;
+
 	return (
-		<Card className="my-3 p-3 rounded">
+		<Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
 			<Link to={`/product/${product._id}`}>
-				<Card.Img src={product.image} variant="top" />
+				<Image src={product.image} alt={product.name} />
 			</Link>
 
-			<Card.Body>
+			<Box p="6">
+				<Box d="flex" alignItems="baseline">
+					<Badge borderRadius="full" px="2" colorScheme="purple">
+						New
+					</Badge>
+					<Box
+						color="gray.500"
+						fontWeight="semibold"
+						letterSpacing="wide"
+						fontSize="xs"
+						textTransform="uppercase"
+						ml="1"
+					>
+						by {user.name}
+					</Box>
+				</Box>
 				<Link to={`/product/${product._id}`}>
-					<Card.Title as="div">
-						<strong>{product.name}</strong>
-					</Card.Title>
+					<Box
+						mt="1"
+						fontWeight="semibold"
+						as="h4"
+						LineHeight="tight"
+						isTruncated
+					>
+						{product.name}
+					</Box>
+
+					<Box>${product.price}</Box>
 				</Link>
-				<Card.Text as="div">
+				<Box d="flex" mt="2" alignItems="center">
 					<Rating
 						value={product.rating}
 						text={`${product.numReviews} reviews`}
 					/>
-				</Card.Text>
-
-				<Card.Text as="h3">${product.price}</Card.Text>
-			</Card.Body>
-		</Card>
+				</Box>
+			</Box>
+		</Box>
 	);
 };
 

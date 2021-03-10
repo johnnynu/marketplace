@@ -4,6 +4,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
 
+import { Box, Text, Flex } from "@chakra-ui/react";
+
 const Header = () => {
 	const dispatch = useDispatch();
 	const userLogin = useSelector((state) => state.userLogin);
@@ -14,44 +16,50 @@ const Header = () => {
 	};
 
 	return (
-		<header>
-			<Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-				<Container>
-					<LinkContainer to="/">
-						<Navbar.Brand>Marketplace</Navbar.Brand>
-					</LinkContainer>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="ml-auto">
-							<LinkContainer to="/cart">
-								<Nav.Link>
-									<i className="fas fa-shopping-cart"></i> Cart
-								</Nav.Link>
-							</LinkContainer>
-							{userInfo ? (
-								<NavDropdown title={userInfo.name} id="username">
-									<LinkContainer to="/profile">
-										<NavDropdown.Item>Profile</NavDropdown.Item>
-									</LinkContainer>
-									<LinkContainer to="/messages">
-										<NavDropdown.Item>Messages</NavDropdown.Item>
-									</LinkContainer>
-									<NavDropdown.Item onClick={logoutHandler}>
-										Sign Out
-									</NavDropdown.Item>
-								</NavDropdown>
-							) : (
-								<LinkContainer to="/login">
+		<>
+			<header>
+				<Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+					<Container>
+						<LinkContainer to="/">
+							<Navbar.Brand>
+								<Text fontSize="2xl">Marketplace</Text>
+							</Navbar.Brand>
+						</LinkContainer>
+						<Navbar.Toggle aria-controls="basic-navbar-nav" />
+						<Navbar.Collapse id="basic-navbar-nav">
+							<Nav className="ml-auto">
+								<LinkContainer to="/cart">
 									<Nav.Link>
-										<i className="fas fa-user"></i> Sign In
+										<i className="fas fa-shopping-cart"></i> Cart
 									</Nav.Link>
 								</LinkContainer>
-							)}
-						</Nav>
-					</Navbar.Collapse>
-				</Container>
-			</Navbar>
-		</header>
+								{userInfo ? (
+									<NavDropdown title={userInfo.name} id="username">
+										<LinkContainer to="/profile">
+											<NavDropdown.Item>
+												<Text fontSize="md">Profile</Text>
+											</NavDropdown.Item>
+										</LinkContainer>
+										<LinkContainer to="/messages">
+											<NavDropdown.Item>Messages</NavDropdown.Item>
+										</LinkContainer>
+										<NavDropdown.Item onClick={logoutHandler}>
+											Sign Out
+										</NavDropdown.Item>
+									</NavDropdown>
+								) : (
+									<LinkContainer to="/login">
+										<Nav.Link>
+											<i className="fas fa-user"></i> Sign In
+										</Nav.Link>
+									</LinkContainer>
+								)}
+							</Nav>
+						</Navbar.Collapse>
+					</Container>
+				</Navbar>
+			</header>
+		</>
 	);
 };
 
