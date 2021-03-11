@@ -12,6 +12,9 @@ const theme = extendTheme({
 		initialColorMode: "dark",
 		cssVarPrefix: "ck",
 	},
+	colors: {
+		black: "#000",
+	},
 });
 
 ReactDOM.render(

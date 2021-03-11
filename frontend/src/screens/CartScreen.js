@@ -11,7 +11,23 @@ import {
 	Button,
 	Card,
 } from "react-bootstrap";
+import {
+	Heading,
+	Alert,
+	AlertIcon,
+	AlertTitle,
+	AlertDescription,
+	Box,
+	Center,
+	Stack,
+	Text,
+	useColorModeValue,
+	Button as ChakraButton,
+	Divider,
+	Flex,
+} from "@chakra-ui/react";
 import { addToCart, removeFromCart } from "../actions/cartActions";
+import { model } from "mongoose";
 
 const CartScreen = ({ match, location, history }) => {
 	const productId = match.params.id;
@@ -42,13 +58,17 @@ const CartScreen = ({ match, location, history }) => {
 	return (
 		<Row>
 			<Col md={8}>
-				<h1>Cart</h1>
+				<Heading as="h2">Cart</Heading>
 				{cartItems.length === 0 ? (
-					<Message>
-						Cart is empty! <Link to="/">Keep Shopping</Link>
-					</Message>
+					<Alert status="warning">
+						<AlertIcon />
+						<AlertTitle mr={2}>Cart is empty!</AlertTitle>
+						<AlertDescription>
+							<Link to="/">Keep Shopping</Link>
+						</AlertDescription>
+					</Alert>
 				) : (
-					<ListGroup variant="flush">
+					<Box p="6">
 						{cartItems.map((item) => (
 							<ListGroup.Item key={item.product}>
 								<Row>
@@ -89,36 +109,52 @@ const CartScreen = ({ match, location, history }) => {
 								</Row>
 							</ListGroup.Item>
 						))}
-					</ListGroup>
+					</Box>
 				)}
 			</Col>
 			<Col md={4}>
-				<Card>
-					<ListGroup variant="flush">
-						<ListGroup.Item>
-							<h2>
-								Subtotal (
-								{cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
-								Items):
-							</h2>
-							$
-							{cartItems
-								.reduce((acc, item) => acc + item.quantity * item.price, 0)
-								.toFixed(2)}
-						</ListGroup.Item>
-						<ListGroup.Item>
-							<Button
-								variant="success"
-								type="button"
-								className="btn-block"
-								disabled={cartItems.length === 0}
-								onClick={checkoutHandler}
+				<Center py={6}>
+					<Box
+						as="section"
+						bg={useColorModeValue("gray.100", "inherit")}
+						py="12"
+					>
+						<Box maxW={{ base: "xl", md: "7xl" }} mx="auto" px={{ md: "8" }}>
+							<Box
+								maxW="3xl"
+								mx="auto"
+								rounded={{ md: "lg" }}
+								bg={useColorModeValue("white", "gray.700")}
+								shadow="base"
+								overflow="hidden"
 							>
-								Checkout
-							</Button>
-						</ListGroup.Item>
-					</ListGroup>
-				</Card>
+								<Flex align="center" justify="space-between" px="6" py="4">
+									<Text as="h3" fontWeight="bold" fontSize="lg">
+										Subtotal (
+										{cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+										Items): $
+										{cartItems
+											.reduce(
+												(acc, item) => acc + item.quantity * item.price,
+												0
+											)
+											.toFixed(2)}
+									</Text>
+								</Flex>
+								<Divider />
+								<Button
+									variant="success"
+									type="button"
+									className="btn-block"
+									disabled={cartItems.length === 0}
+									onClick={checkoutHandler}
+								>
+									Checkout
+								</Button>
+							</Box>
+						</Box>
+					</Box>
+				</Center>
 			</Col>
 		</Row>
 	);

@@ -1,11 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col, footer } from "react-bootstrap";
+import { Form, Button, Row, Col, footer, CloseButton } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
+import {
+	Box,
+	Button as ChakraButton,
+	Heading,
+	SimpleGrid,
+	Text,
+	useColorModeValue,
+	VisuallyHidden,
+	FormControl,
+	FormLabel,
+	Input,
+	Stack,
+	Alert,
+	AlertIcon,
+	AlertDescription,
+	AlertTitle,
+	CloseButton as ChakraCloseButton,
+	Center,
+} from "@chakra-ui/react";
+import { DividerWithText } from "../components/DividerWithText";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginScreen = ({ location, history }) => {
 	const [email, setEmail] = useState("");
@@ -31,58 +52,99 @@ const LoginScreen = ({ location, history }) => {
 	};
 
 	return (
-		<FormContainer>
-			{loading && <Loader />}
-			<h1 align="center">
-				<i class="fas fa-store"></i>
-			</h1>
-			{error && <Message variant="danger">{error}</Message>}
-			<Form onSubmit={submitHandler}>
-				<Form.Group controlId="email">
-					<Form.Label>Email Address</Form.Label>
-					<Form.Control
-						type="email"
-						placeholder="Enter email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					></Form.Control>
-				</Form.Group>
-			</Form>
-			<Form onSubmit={submitHandler}>
-				<Form.Group controlId="password">
-					<Form.Label>Password</Form.Label>
-					<Form.Control
-						type="password"
-						placeholder="Enter password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					></Form.Control>
-				</Form.Group>
-				<Row className="py-1"></Row>
-				<Button type="submit" variant="success" size="lg" block>
-					Sign In
-				</Button>
-			</Form>
-			<Row className="py-2"></Row>
-			<Row className="d-flex">
-				<hr class="my-auto flex-grow-1" />
-				<div class="px-4">or</div>
-				<hr class="my-auto flex-grow-1" />
-			</Row>
-			<Row className="py-3">
-				<Col md={12}>
-					<Button
-						type="submit"
-						href={redirect ? `/register?redirect=${redirect}` : "/register"}
-						variant="success"
-						size="lg"
-						block
+		<form onSubmit={submitHandler}>
+			<Box
+				bg={useColorModeValue("gray.50", "inherit")}
+				minH="100vh"
+				py="12"
+				px={{ sm: "6", lg: "8" }}
+			>
+				<Box maxW={{ sm: "md" }} mx={{ sm: "auto" }} w={{ sm: "full" }}>
+					{loading && <Loader />}
+					{error && (
+						<Alert status="error">
+							<AlertIcon />
+							<AlertTitle mr={2}>Login info incorrect</AlertTitle>
+							<AlertDescription>
+								Please enter correct login credentials
+							</AlertDescription>
+							{error}
+						</Alert>
+					)}
+					<Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
+						Sign In
+					</Heading>
+					<Text mt="4" align="center" maxW="md" fontWeight="medium">
+						<span>Don't have an account?</span>
+						<Box
+							as="a"
+							marginStart="1"
+							href={redirect ? `/register?redirect=${redirect}` : "/register"}
+							color={useColorModeValue("blue.600", "blue.200")}
+							_hover={{ color: "blue.600" }}
+							display={{ base: "block", sm: "revert" }}
+						>
+							Sign Up!
+						</Box>
+					</Text>
+				</Box>
+				<Box maxW={{ sm: "md" }} mx={{ sm: "auto" }} mt="8" w={{ sm: "full" }}>
+					<Box
+						bg={useColorModeValue("white", "gray.700")}
+						py="8"
+						px={{ base: "4", md: "10" }}
+						shadow="base"
+						rounded={{ sm: "lg" }}
 					>
-						Sign Up
-					</Button>
-				</Col>
-			</Row>
-		</FormContainer>
+						<Stack spacing="6">
+							<FormControl id="email">
+								<FormLabel>Email Address</FormLabel>
+								<Input
+									type="email"
+									placeholder="Enter email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</FormControl>
+							<FormControl id="password">
+								<FormLabel>Password</FormLabel>
+								<Input
+									type="password"
+									placeholder="Enter password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+								<Center p={4}>
+									<ChakraButton
+										type="submit"
+										variant="solid"
+										w="full"
+										maxW="md"
+									>
+										<Center>
+											<Text>Sign In</Text>
+										</Center>
+									</ChakraButton>
+								</Center>
+							</FormControl>
+						</Stack>
+						<DividerWithText mt="1">or</DividerWithText>
+						<Center p={4}>
+							<ChakraButton
+								variant="solid"
+								w="full"
+								maxW="md"
+								leftIcon={<FcGoogle />}
+							>
+								<Center>
+									<Text>Sign in With Google</Text>
+								</Center>
+							</ChakraButton>
+						</Center>
+					</Box>
+				</Box>
+			</Box>
+		</form>
 	);
 };
 

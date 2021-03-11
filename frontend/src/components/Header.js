@@ -3,8 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
+import { AiTwotoneShop } from "react-icons/ai";
 
-import { Box, Text, Flex } from "@chakra-ui/react";
+import {
+	Box,
+	Text,
+	Flex,
+	Heading,
+	MenuItems,
+	Menu,
+	MenuButton,
+	Button,
+	ChevronDownIcon,
+} from "@chakra-ui/react";
 
 const Header = () => {
 	const dispatch = useDispatch();

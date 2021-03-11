@@ -17,7 +17,13 @@ const Product = ({ product }) => {
 	const { user } = userDetails;
 
 	return (
-		<Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+		<Box
+			maxW="sm"
+			borderWidth="1px"
+			borderRadius="lg"
+			overflow="hidden"
+			bg="colors.black"
+		>
 			<Link to={`/product/${product._id}`}>
 				<Image src={product.image} alt={product.name} />
 			</Link>
