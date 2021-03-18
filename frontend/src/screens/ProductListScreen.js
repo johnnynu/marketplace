@@ -37,12 +37,12 @@ const ProductListScreen = ({ history, match }) => {
 
 	useEffect(() => {
 		dispatch({ type: PRODUCT_CREATE_RESET });
-		if (!userInfo.isAdmin) {
+
+		if (!userInfo || !userInfo.isAdmin) {
 			history.push("/login");
 		}
 
 		if (createSuccess) {
-			// redirects to product edit screen
 			history.push(`/product/${createdProduct._id}/edit`);
 		} else {
 			dispatch(listProducts());
@@ -70,7 +70,7 @@ const ProductListScreen = ({ history, match }) => {
 		<>
 			<Row className="align-items-center">
 				<Col>
-					<h1>products</h1>
+					<h1>Products</h1>
 				</Col>
 				<Col className="text-right">
 					<Button className="my-3" onClick={createProductHandler}>
@@ -106,7 +106,7 @@ const ProductListScreen = ({ history, match }) => {
 								<td>{product.category}</td>
 								<td>{product.brand}</td>
 								<td>
-									<LinkContainer to={`/admin/product/${product._id}/edit`}>
+									<LinkContainer to={`/product/${product._id}/edit`}>
 										<Button variant="dark" className="btn-sm">
 											<i className="fas fa-edit"></i>
 										</Button>
