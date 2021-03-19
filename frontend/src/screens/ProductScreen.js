@@ -63,6 +63,9 @@ const ProductScreen = ({ match, history }) => {
 							src={product.image}
 							alt={product.name}
 							objectFit="cover"
+							w="600px"
+							border="100px"
+							rounded="20px"
 						/>
 					</Skeleton>
 					<Col md={3}>

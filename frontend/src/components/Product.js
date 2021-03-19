@@ -25,7 +25,13 @@ const Product = ({ product }) => {
 			bg="colors.black"
 		>
 			<Link to={`/product/${product._id}`}>
-				<Image src={product.image} alt={product.name} />
+				<Image
+					src={product.image}
+					alt={product.name}
+					objectFit="cover"
+					w="600px"
+					h="250px"
+				/>
 			</Link>
 
 			<Box p="6">
