@@ -20,6 +20,9 @@ import {
 } from "../constants/orderConstants";
 import axios from "axios";
 
+// TODOS:
+// 1. Add functionality for updating stock (when bought or when selling more)
+
 export const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({

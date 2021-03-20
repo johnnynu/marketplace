@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/OrderModel.js";
-import mongoose from "mongoose";
 
 // @desc    Create new order
 // @route   POST /api/orders
