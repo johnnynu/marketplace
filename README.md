@@ -2,6 +2,10 @@
 
 Marketplace is a web application that allows users to buy products from other users as well as upload products to sell to other users.
 
+## Tech Stack
+
+MongoDB, Express.js, React, Node.js
+
 ## Live Demo
 
 Available soon!
