@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Button as ChakraButton } from "@chakra-ui/react";
 
 const SearchBar = ({ history }) => {
 	const [keyword, setKeyword] = useState("");
@@ -22,9 +23,9 @@ const SearchBar = ({ history }) => {
 				placeholder="Find a product"
 				className="mr-sm-2 ml-sm-5"
 			></Form.Control>
-			<Button type="submit" variant="outline-success" className="p-2">
+			<ChakraButton type="submit" colorScheme="teal">
 				Search
-			</Button>
+			</ChakraButton>
 		</Form>
 	);
 };

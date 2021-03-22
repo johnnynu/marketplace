@@ -15,14 +15,21 @@ import {
 	PRODUCT_UPDATE_RESET,
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_FAIL,
+	PRODUCT_LATEST_SUCCESS,
+	PRODUCT_LATEST_REQUEST,
+	PRODUCT_LATEST_FAIL,
 } from "../constants/productConstants";
 import axios from "axios";
 
-export const listProducts = (keyword = "") => async (dispatch) => {
+export const listProducts = (keyword = "", pageNumber = "") => async (
+	dispatch
+) => {
 	try {
 		dispatch({ type: PRODUCT_LIST_REQUEST });
 
-		const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+		const { data } = await axios.get(
+			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+		);
 
 		dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
 	} catch (error) {
@@ -156,6 +163,24 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 		dispatch({
 			type: PRODUCT_UPDATE_FAIL,
 			payload: message,
+		});
+	}
+};
+
+export const listLatestProducts = () => async (dispatch) => {
+	try {
+		dispatch({ type: PRODUCT_LATEST_REQUEST });
+
+		const { data } = await axios.get(`/api/products/latest`);
+
+		dispatch({ type: PRODUCT_LATEST_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_LATEST_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
 		});
 	}
 };

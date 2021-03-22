@@ -5,6 +5,9 @@ import Product from "../models/productModel.js";
 // @route   GET /api/products
 //@access   Public
 const getProducts = asyncHandler(async (req, res) => {
+	const pageSize = 6;
+	const page = Number(req.query.pageNumber) || 1;
+
 	const keyword = req.query.keyword
 		? {
 				name: {
@@ -13,8 +16,12 @@ const getProducts = asyncHandler(async (req, res) => {
 				},
 		  }
 		: {};
-	const products = await Product.find({ ...keyword });
-	res.json(products);
+
+	const count = await Product.countDocuments({ ...keyword });
+	const products = await Product.find({ ...keyword })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+	res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc    Fetches a single product
@@ -87,10 +94,20 @@ const updateProduct = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc    Get latest products
+// @route   GET /api/products/latest
+//@access   Public
+const latestProducts = asyncHandler(async (req, res) => {
+	const products = await Product.find({}).sort({ createdAt: "desc" }).limit(3);
+
+	res.json(products);
+});
+
 export {
 	getProducts,
 	getProductById,
 	deleteProduct,
 	createProduct,
 	updateProduct,
+	latestProducts,
 };
